@@ -16,6 +16,7 @@ class Config(object):
         self.xvfb = xvfb
         self.meta_tag_prefix = meta_tag_prefix
 
+    def get_wkhtmltoimage(self):
         if not self.wkhtmltoimage:
             # get wkhtmltoimage in *nix/windows server
             # see https://github.com/jarrekk/imgkit/issues/57 for windows condition
@@ -24,10 +25,27 @@ class Config(object):
                     self.wkhtmltoimage = subprocess.check_output([find_cmd, 'wkhtmltoimage']).strip()
                     break
                 except CalledProcessError:
-                    self.wkhtmltoimage = ''
+                    self.wkhtmltoimage = 'command not found'
                 except OSError:
-                    self.wkhtmltoimage = ''
+                    self.wkhtmltoimage = 'command not found'
 
+        wkhtmltoimage_error = """
+No wkhtmltoimage executable found: "{0}"\nIf this file exists please check that this process can read it.
+Otherwise please install wkhtmltopdf - http://wkhtmltopdf.org\n
+        """.format(self.wkhtmltoimage)
+
+        if self.wkhtmltoimage != 'command not found':
+            try:
+                with open(self.wkhtmltoimage):
+                    pass
+            except IOError:
+                raise IOError(wkhtmltoimage_error)
+        else:
+            raise IOError(wkhtmltoimage_error)
+
+        return self.wkhtmltoimage
+
+    def get_xvfb(self):
         if not self.xvfb:
             # get xvfb in *nix/windows server
             # see https://github.com/jarrekk/imgkit/issues/57 for windows condition
@@ -36,23 +54,21 @@ class Config(object):
                     self.xvfb = subprocess.check_output([find_cmd, 'xvfb-run']).strip()
                     break
                 except CalledProcessError:
-                    self.xvfb = ''
+                    self.xvfb = 'command not found'
                 except OSError:
-                    self.xvfb = ''
+                    self.xvfb = 'command not found'
 
-        try:
-            with open(self.wkhtmltoimage):
-                pass
-        except IOError:
-            raise IOError('No wkhtmltoimage executable found: "{0}"\n'
-                          'If this file exists please check that this process can '
-                          'read it. Otherwise please install wkhtmltopdf - '
-                          'http://wkhtmltopdf.org\n'.format(self.wkhtmltoimage))
-        if self.xvfb:
+        xvfb_error = """
+        No xvfb executable found: "{0}"\nIf this file exists please check that this process can read it. 
+        Otherwise please install xvfb.
+                """.format(self.xvfb)
+
+        if self.xvfb != 'command not found':
             try:
                 with open(self.xvfb):
                     pass
             except IOError:
-                raise IOError('No xvfb executable found: "{0}"\n'
-                              'If this file exists please check that this process can '
-                              'read it. Otherwise please install xvfb -'.format(self.xvfb))
+                raise IOError(xvfb_error)
+        else:
+            raise IOError(xvfb_error)
+        return self.xvfb
