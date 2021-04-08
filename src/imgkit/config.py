@@ -4,9 +4,11 @@ from subprocess import CalledProcessError
 
 
 class Config:
+
     """Config class to configure wkhtmltoimage, xvfb-run and meta tag prefix"""
 
     def __init__(self, wkhtmltoimage="", xvfb="", meta_tag_prefix="imgkit-"):
+
         """
         Configure wkhtmltoimage, xvfb, meta_tag_prefix.
 
@@ -19,6 +21,9 @@ class Config:
         self.meta_tag_prefix = meta_tag_prefix
 
     def get_wkhtmltoimage(self):
+
+        """Get wkhtmltoimage binary path"""
+
         if not self.wkhtmltoimage:
             # get wkhtmltoimage in *nix/windows server
             # see https://github.com/jarrekk/imgkit/issues/57 for windows condition
@@ -52,6 +57,9 @@ Otherwise please install wkhtmltopdf - http://wkhtmltopdf.org\n
         return self.wkhtmltoimage
 
     def get_xvfb(self):
+
+        """Get xvfb-run binary path"""
+
         if not self.xvfb:
             # get xvfb in *nix/windows server
             # see https://github.com/jarrekk/imgkit/issues/57 for windows condition

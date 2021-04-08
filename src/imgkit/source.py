@@ -4,6 +4,7 @@ import os
 
 
 class Source:
+
     """Handle source object"""
 
     def __init__(self, url_or_file, type_):
@@ -14,7 +15,16 @@ class Source:
             self.checkFiles()
 
     def isUrl(self):
+
+        """URL type"""
+
         return "url" in self.type
+
+    def isString(self):
+
+        """String type"""
+
+        return "string" in self.type
 
     def isFile(self, path=None):
         # dirty hack to check where file is opened with codecs module
@@ -34,9 +44,6 @@ class Source:
         else:
             if not hasattr(self.source, "read") and not os.path.exists(self.source):
                 raise IOError("No such file: {}".format(self.source))
-
-    def isString(self):
-        return "string" in self.type
 
     def isFileObj(self):
         return hasattr(self.source, "read")

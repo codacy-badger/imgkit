@@ -12,18 +12,29 @@ from .source import Source
 
 
 class IMGKit:
+
     """Main class for imgkit"""
 
     class SourceError(Exception):
+
         """Wrong source type for stylesheets"""
 
         def __init__(self, message):
+
+            """SourceError message"""
+
             self.message = message
 
         def __str__(self):
+
+            """SourceError message string"""
+
             return self.message
 
     def __init__(self, url_or_file, source_type, options=None, config=None, **kwargs):
+
+        """Deliver parameters into IMGkit"""
+
         params = ["toc", "cover", "cover_first", "css"]
         for param in params:
             setattr(self, param, kwargs.get(param, None))
@@ -48,9 +59,9 @@ class IMGKit:
         self.stylesheets = []
 
     def _gegetate_args(self, options):
-        """
-        Generator of args parts based on options specification.
-        """
+
+        """Generator of args parts based on options specification."""
+
         for optkey, optval in self._normalize_options(options):
             yield optkey
 
@@ -64,11 +75,9 @@ class IMGKit:
                 yield optval
 
     def _command(self, path=None):
-        """
-        Generator of all command parts
-        :type options: object
-        :return:
-        """
+
+        """Generator of all command parts"""
+
         options = self._gegetate_args(self.options)
         options = [x for x in options]
         # print 'options', options
@@ -121,9 +130,13 @@ class IMGKit:
             yield "-"
 
     def command(self, path=None):
+
+        """Generate command"""
+
         return list(self._command(path))
 
     def _normalize_options(self, options):
+
         """
         Generator of 2-tuples (option-key, option-value).
         When options spec is a list, generate a 2-tuples per list item.
@@ -135,6 +148,7 @@ class IMGKit:
           - option names lower cased and prepended with
           '--' if necessary. Non-empty values cast to str
         """
+
         for key, value in list(options.items()):
             if "--" in key:
                 normalized_key = self._normalize_arg(key)
@@ -186,6 +200,7 @@ class IMGKit:
                 self.source.source = self._style_tag(css_data) + self.source.to_s()
 
     def _find_options_in_meta(self, content):
+
         """Reads 'content' and extracts options encoded in HTML meta tags
 
         :param content: str or file-like object - contains HTML to parse
@@ -193,6 +208,7 @@ class IMGKit:
         returns:
           dict: {config option: value}
         """
+
         if (
             isinstance(content, io.IOBase)
             or content.__class__.__name__ == "StreamReaderWriter"
@@ -211,6 +227,9 @@ class IMGKit:
         return found
 
     def to_img(self, path=None):
+
+        """Generate image to path"""
+
         args = self.command(path)
 
         result = subprocess.Popen(
