@@ -20,19 +20,16 @@ class IMGKit:
         """Wrong source type for stylesheets"""
 
         def __init__(self, message):
-
             """SourceError message"""
 
             self.message = message
 
         def __str__(self):
-
             """SourceError message string"""
 
             return self.message
 
     def __init__(self, url_or_file, source_type, options=None, config=None, **kwargs):
-
         """Deliver parameters into IMGkit"""
 
         params = ["toc", "cover", "cover_first", "css"]
@@ -59,7 +56,6 @@ class IMGKit:
         self.stylesheets = []
 
     def _gegetate_args(self, options):
-
         """Generator of args parts based on options specification."""
 
         for optkey, optval in self._normalize_options(options):
@@ -75,7 +71,6 @@ class IMGKit:
                 yield optval
 
     def _command(self, path=None):
-
         """Generator of all command parts"""
 
         options = self._gegetate_args(self.options)
@@ -130,13 +125,11 @@ class IMGKit:
             yield "-"
 
     def command(self, path=None):
-
         """Generate command"""
 
         return list(self._command(path))
 
     def _normalize_options(self, options):
-
         """
         Generator of 2-tuples (option-key, option-value).
         When options spec is a list, generate a 2-tuples per list item.
@@ -200,7 +193,6 @@ class IMGKit:
                 self.source.source = self._style_tag(css_data) + self.source.to_s()
 
     def _find_options_in_meta(self, content):
-
         """Reads 'content' and extracts options encoded in HTML meta tags
 
         :param content: str or file-like object - contains HTML to parse
@@ -227,7 +219,6 @@ class IMGKit:
         return found
 
     def to_img(self, path=None):
-
         """Generate image to path"""
 
         args = self.command(path)

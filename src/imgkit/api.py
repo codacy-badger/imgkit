@@ -12,7 +12,6 @@ def from_url(
     configuration=None,
     cover_first=None,
 ):
-
     """
     Convert URL/URLs to IMG file/files
 
@@ -47,7 +46,6 @@ def from_file(
     configuration=None,
     cover_first=None,
 ):
-
     """
     Convert HTML file/files to IMG file/files
 
@@ -84,7 +82,6 @@ def from_string(
     configuration=None,
     cover_first=None,
 ):
-
     """
     Convert given string/strings to IMG file
 
@@ -112,7 +109,6 @@ def from_string(
 
 
 def config(**kwargs):
-
     """
     Constructs and returns a :class:`Config` with given options
 

@@ -15,13 +15,11 @@ class Source:
             self.checkFiles()
 
     def isUrl(self):
-
         """URL type"""
 
         return "url" in self.type
 
     def isString(self):
-
         """String type"""
 
         return "string" in self.type
