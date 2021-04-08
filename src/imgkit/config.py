@@ -3,8 +3,10 @@ import subprocess
 from subprocess import CalledProcessError
 
 
-class Config(object):
-    def __init__(self, wkhtmltoimage='', xvfb='', meta_tag_prefix='imgkit-'):
+class Config:
+    """Config class to configure wkhtmltoimage, xvfb-run and meta tag prefix"""
+
+    def __init__(self, wkhtmltoimage="", xvfb="", meta_tag_prefix="imgkit-"):
         """
         Configure wkhtmltoimage, xvfb, meta_tag_prefix.
 
@@ -20,21 +22,25 @@ class Config(object):
         if not self.wkhtmltoimage:
             # get wkhtmltoimage in *nix/windows server
             # see https://github.com/jarrekk/imgkit/issues/57 for windows condition
-            for find_cmd in ('where', 'which'):
+            for find_cmd in ("where", "which"):
                 try:
-                    self.wkhtmltoimage = subprocess.check_output([find_cmd, 'wkhtmltoimage']).strip()
+                    self.wkhtmltoimage = subprocess.check_output(
+                        [find_cmd, "wkhtmltoimage"]
+                    ).strip()
                     break
                 except CalledProcessError:
-                    self.wkhtmltoimage = 'command not found'
+                    self.wkhtmltoimage = "command not found"
                 except OSError:
-                    self.wkhtmltoimage = 'command not found'
+                    self.wkhtmltoimage = "command not found"
 
         wkhtmltoimage_error = """
 No wkhtmltoimage executable found: "{0}"\nIf this file exists please check that this process can read it.
 Otherwise please install wkhtmltopdf - http://wkhtmltopdf.org\n
-        """.format(self.wkhtmltoimage)
+        """.format(
+            self.wkhtmltoimage
+        )
 
-        if self.wkhtmltoimage != 'command not found':
+        if self.wkhtmltoimage != "command not found":
             try:
                 with open(self.wkhtmltoimage):
                     pass
@@ -49,21 +55,23 @@ Otherwise please install wkhtmltopdf - http://wkhtmltopdf.org\n
         if not self.xvfb:
             # get xvfb in *nix/windows server
             # see https://github.com/jarrekk/imgkit/issues/57 for windows condition
-            for find_cmd in ('where', 'which'):
+            for find_cmd in ("where", "which"):
                 try:
-                    self.xvfb = subprocess.check_output([find_cmd, 'xvfb-run']).strip()
+                    self.xvfb = subprocess.check_output([find_cmd, "xvfb-run"]).strip()
                     break
                 except CalledProcessError:
-                    self.xvfb = 'command not found'
+                    self.xvfb = "command not found"
                 except OSError:
-                    self.xvfb = 'command not found'
+                    self.xvfb = "command not found"
 
         xvfb_error = """
-        No xvfb executable found: "{0}"\nIf this file exists please check that this process can read it. 
+        No xvfb executable found: "{0}"\nIf this file exists please check that this process can read it.
         Otherwise please install xvfb.
-                """.format(self.xvfb)
+                """.format(
+            self.xvfb
+        )
 
-        if self.xvfb != 'command not found':
+        if self.xvfb != "command not found":
             try:
                 with open(self.xvfb):
                     pass
