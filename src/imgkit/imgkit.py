@@ -27,12 +27,8 @@ class IMGKit(object):
                  css=None, config=None, cover_first=None):
         self.source = Source(url_or_file, source_type)
         self.config = Config() if not config else config
-        try:
-            self.wkhtmltoimage = self.config.wkhtmltoimage.decode('utf-8')
-        except AttributeError:
-            self.wkhtmltoimage = self.config.wkhtmltoimage
+        self.wkhtmltoimage = self.config.get_wkhtmltoimage()
 
-        self.xvfb = self.config.xvfb
 
         self.options = {}
         if self.source.isString():
@@ -40,6 +36,9 @@ class IMGKit(object):
 
         if options:
             self.options.update(options)
+
+        if options and 'xvfb' in options:
+            self.xvfb = self.config.get_xvfb()
 
         self.toc = toc if toc else {}
         self.cover = cover
