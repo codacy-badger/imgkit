@@ -23,17 +23,10 @@ class IMGKit:
         def __str__(self):
             return self.message
 
-    def __init__(
-        self,
-        url_or_file,
-        source_type,
-        options=None,
-        toc=None,
-        cover=None,
-        css=None,
-        config=None,
-        cover_first=None,
-    ):
+    def __init__(self, url_or_file, source_type, options=None, config=None, **kwargs):
+        params = ["toc", "cover", "cover_first", "css"]
+        for param in params:
+            setattr(self, param, kwargs.get(param, None))
         self.source = Source(url_or_file, source_type)
         self.config = Config() if not config else config
         self.wkhtmltoimage = self.config.get_wkhtmltoimage()
@@ -48,10 +41,10 @@ class IMGKit:
         if options and "xvfb" in options:
             self.xvfb = self.config.get_xvfb()
 
-        self.toc = toc if toc else {}
-        self.cover = cover
-        self.cover_first = cover_first
-        self.css = css
+        self.toc = self.toc if self.toc else {}
+        self.cover = self.cover
+        self.cover_first = self.cover_first
+        self.css = self.css
         self.stylesheets = []
 
     def _gegetate_args(self, options):
